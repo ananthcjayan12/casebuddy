@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Submit New Case - CaseBuddy{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-5 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-gray-900">Submit New Case</h2>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                    New Submission
+                </span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="px-6 py-5">
+            <!-- Info Box -->
+            <div class="mb-6">
+                <div class="bg-blue-50 rounded-md p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                Please provide the details of your case. A lawyer will be assigned to assist you once you submit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Title Field -->
+                <div class="space-y-1">
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Case Title
+                    </label>
+                    <div class="mt-1">
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" 
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                               placeholder="Enter a brief title for your case"
+                               required>
+                    </div>
+                    {% if form.title.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.title.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Description Field -->
+                <div class="space-y-1">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Case Description
+                    </label>
+                    <div class="mt-1">
+                        <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" rows="5"
+                                  class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                  placeholder="Provide detailed information about your case"
+                                  required></textarea>
+                    </div>
+                    {% if form.description.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Category Field -->
+                <div class="space-y-1">
+                    <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Case Category
+                    </label>
+                    <div class="mt-1">
+                        <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}"
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                required>
+                            <option value="">Select a category</option>
+                            {% for choice in form.category.field.choices %}
+                                {% if choice.0 != '' %}
+                                    <option value="{{ choice.0 }}" {% if form.category.value == choice.0 %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% if form.category.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Preferred Lawyer Field -->
+                <div class="space-y-1">
+                    <label for="{{ form.preferred_lawyer.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Preferred Lawyer (Optional)
+                    </label>
+                    <div class="mt-1">
+                        <select name="{{ form.preferred_lawyer.name }}" id="{{ form.preferred_lawyer.id_for_label }}"
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="">Select a preferred lawyer (optional)</option>
+                            {% for lawyer in form.preferred_lawyer.field.queryset %}
+                                <option value="{{ lawyer.id }}" {% if form.preferred_lawyer.value == lawyer.id %}selected{% endif %}>
+                                    {{ lawyer.get_full_name|default:lawyer.username }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% if form.preferred_lawyer.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.preferred_lawyer.errors.0 }}</p>
+                    {% endif %}
+                    {% if form.preferred_lawyer.help_text %}
+                        <p class="mt-2 text-sm text-gray-500">{{ form.preferred_lawyer.help_text }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <a href="{% url 'case_list' %}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Submit Case
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

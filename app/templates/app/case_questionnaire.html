@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Case Questionnaire - {{ case.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-5 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-gray-900">Case Questionnaire</h2>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {{ case.title }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="px-6 py-5">
+            <!-- Info Box -->
+            <div class="mb-6">
+                <div class="bg-blue-50 rounded-md p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                Please provide detailed information about your case. This will help us prepare a comprehensive draft and better understand your situation.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Client Information Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Client Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label for="{{ form.client_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            {{ form.client_name|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.client_age.id_for_label }}" class="block text-sm font-medium text-gray-700">Age</label>
+                            {{ form.client_age|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1 md:col-span-2">
+                            <label for="{{ form.client_address.id_for_label }}" class="block text-sm font-medium text-gray-700">Address</label>
+                            {{ form.client_address|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.client_phone.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            {{ form.client_phone|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.client_email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+                            {{ form.client_email|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Defendant Information Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Defendant Information</h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="space-y-1">
+                            <label for="{{ form.defendant_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Defendant Name</label>
+                            {{ form.defendant_name|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.defendant_address.id_for_label }}" class="block text-sm font-medium text-gray-700">Defendant Address</label>
+                            {{ form.defendant_address|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.defendant_contact.id_for_label }}" class="block text-sm font-medium text-gray-700">Defendant Contact</label>
+                            {{ form.defendant_contact|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Incident Details Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Incident Details</h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="space-y-1">
+                            <label for="{{ form.incident_date.id_for_label }}" class="block text-sm font-medium text-gray-700">Date of Incident</label>
+                            {{ form.incident_date|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.incident_location.id_for_label }}" class="block text-sm font-medium text-gray-700">Location</label>
+                            {{ form.incident_location|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.incident_description.id_for_label }}" class="block text-sm font-medium text-gray-700">Description</label>
+                            {{ form.incident_description|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Additional Information</h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="space-y-1">
+                            <label for="{{ form.witnesses.id_for_label }}" class="block text-sm font-medium text-gray-700">Witnesses</label>
+                            {{ form.witnesses|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.court_jurisdiction.id_for_label }}" class="block text-sm font-medium text-gray-700">Court Jurisdiction</label>
+                            {{ form.court_jurisdiction|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.case_number.id_for_label }}" class="block text-sm font-medium text-gray-700">Case Number</label>
+                            {{ form.case_number|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.previous_legal_actions.id_for_label }}" class="block text-sm font-medium text-gray-700">Previous Legal Actions</label>
+                            {{ form.previous_legal_actions|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.desired_outcome.id_for_label }}" class="block text-sm font-medium text-gray-700">Desired Outcome</label>
+                            {{ form.desired_outcome|as_crispy_field }}
+                        </div>
+                        <div class="space-y-1">
+                            <label for="{{ form.additional_info.id_for_label }}" class="block text-sm font-medium text-gray-700">Additional Information</label>
+                            {{ form.additional_info|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="flex items-center justify-end space-x-4 pt-6">
+                    <a href="{% url 'case_detail' case.id %}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Back to Case
+                    </a>
+                    <button type="submit" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Submit Questionnaire
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 
