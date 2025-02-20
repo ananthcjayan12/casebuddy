@@ -13,7 +13,7 @@ services:
     environment:
       - DEBUG=1
       - DJANGO_SETTINGS_MODULE=core.settings
-      - ALLOWED_HOSTS=localhost,127.0.0.1,casebuddy.srshti.co.in
+      - ALLOWED_HOSTS=localhost,127.0.0.1,casebuddy.srshti.co.in,hskow8kgwsw4ww0kk844c8c8.82.112.235.216.sslip.io
       - SECRET_KEY=${SECRET_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DATABASE_URL=sqlite:///data/db/db.sqlite3
